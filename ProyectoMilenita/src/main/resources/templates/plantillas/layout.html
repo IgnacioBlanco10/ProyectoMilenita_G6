@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <body>
+
+        <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand fw-bold" th:href="@{/}">Milenita</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav" aria-controls="menuNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menuNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/catalogo}">Catálogo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/login}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/registro-form}">Registro</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <footer th:fragment="footer" class="bg-dark text-white text-center py-3 mt-5">
+            <div class="container">
+                <p class="mb-0">© 2026 Milenita - Tienda en línea</p>
+            </div>
+        </footer>
+
+    </body>
+</html>
