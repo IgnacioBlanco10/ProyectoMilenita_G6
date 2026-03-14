@@ -5,6 +5,8 @@
 package com.milenita.domain;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.*;
 
 @Entity
@@ -19,20 +21,23 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    private String nombreCompleto;
+    @Column(nullable = false, length = 100)
+    private String nombre;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
-    private String contrasena;
+    @Column(nullable = false, length = 255)
+    private String password;
 
-    private String telefono;
-
-    private String direccion;
-
+    @Column(nullable = false)
     private Boolean activo = true;
 
-    @ManyToOne
-    @JoinColumn(name = "id_rol")
-    private Rol rol;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "usuario_rol",
+        joinColumns = @JoinColumn(name = "id_usuario"),
+        inverseJoinColumns = @JoinColumn(name = "id_rol")
+    )
+    private Set<Rol> roles = new HashSet<>();
 }

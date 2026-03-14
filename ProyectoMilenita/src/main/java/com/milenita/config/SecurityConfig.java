@@ -4,21 +4,58 @@
  */
 package com.milenita.config;
 
+import com.milenita.service.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(
+            UsuarioService usuarioService,
+            PasswordEncoder passwordEncoder) {
+
+        DaoAuthenticationProvider authProvider =
+                new DaoAuthenticationProvider(usuarioService);
+
+        authProvider.setPasswordEncoder(passwordEncoder);
+
+        return authProvider;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
+                .requestMatchers("/", "/catalogo", "/producto/**",
+                        "/login", "/registro-form", "/registro",
+                        "/estilos.css", "/img/**", "/css/**", "/js/**")
+                .permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
             )
-            .csrf(csrf -> csrf.disable());
+            .formLogin(form -> form
+                .loginPage("/login")
+                .usernameParameter("correo")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/", true)
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+            );
 
         return http.build();
     }

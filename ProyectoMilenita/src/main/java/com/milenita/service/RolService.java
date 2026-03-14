@@ -15,11 +15,8 @@ public class RolService {
     @Autowired
     private RolRepository rolRepository;
 
-    public Rol getRolPorNombre(String nombre) {
-        return rolRepository.findByNombre(nombre);
-    }
-
-    public void guardar(Rol rol) {
-        rolRepository.save(rol);
+    public Rol buscarPorNombre(String nombre) {
+        return rolRepository.findByNombre(nombre)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + nombre));
     }
 }
