@@ -35,6 +35,10 @@ public class ProductoService {
     public Producto obtenerPorId(Long idProducto) {
         return productoRepository.findByIdProductoAndActivoTrue(idProducto).orElse(null);
     }
+    
+    public Producto obtenerPorIdAdmin(Long idProducto) {
+        return productoRepository.findById(idProducto).orElse(null);
+    }
 
     public List<Producto> listarTodos() {
         return productoRepository.findAll();
@@ -52,4 +56,5 @@ public class ProductoService {
             productoRepository.save(producto);
         }
     }
+    
 }

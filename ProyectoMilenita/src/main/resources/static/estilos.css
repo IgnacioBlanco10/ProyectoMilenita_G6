@@ -6,28 +6,233 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Created on : 11 mar 2026, 6:01:48 p. m.
     Author     : nacho
 */
-body {
-    background-color: #f8f9fa;
+:root {
+    --milenita-amarillo: #f4d21f;
+    --milenita-azul: #173b8f;
+    --milenita-rojo: #d62828;
+    --milenita-blanco: #ffffff;
+    --milenita-negro: #1f1f1f;
+    --milenita-gris: #f5f5f5;
 }
 
-.card-img-top {
-    height: 260px;
+body {
+    background-color: var(--milenita-gris);
+    color: var(--milenita-negro);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.milenita-navbar {
+    background-color: var(--milenita-amarillo);
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.navbar-linea-roja {
+    height: 8px;
+    background-color: var(--milenita-rojo);
+}
+
+.milenita-brand {
+    color: var(--milenita-azul) !important;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.milenita-link {
+    color: var(--milenita-azul) !important;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.milenita-link:hover {
+    color: var(--milenita-rojo) !important;
+}
+
+.admin-link {
+    color: var(--milenita-rojo) !important;
+}
+
+.milenita-btn-outline {
+    border: 2px solid var(--milenita-azul);
+    color: var(--milenita-azul);
+    background-color: transparent;
+    border-radius: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+}
+
+.milenita-btn-outline:hover {
+    background-color: var(--milenita-azul);
+    color: var(--milenita-blanco);
+}
+
+.milenita-btn-amarillo {
+    background-color: var(--milenita-amarillo);
+    color: var(--milenita-azul);
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    padding: 10px 18px;
+}
+
+.milenita-btn-amarillo:hover {
+    background-color: #e6c515;
+    color: var(--milenita-azul);
+}
+
+.milenita-btn-rojo {
+    background-color: var(--milenita-rojo);
+    color: var(--milenita-blanco);
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    padding: 10px 18px;
+}
+
+.milenita-btn-rojo:hover {
+    background-color: #b81f1f;
+    color: var(--milenita-blanco);
+}
+
+.milenita-btn-azul {
+    background-color: var(--milenita-azul);
+    color: var(--milenita-blanco);
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    padding: 10px 18px;
+}
+
+.milenita-btn-azul:hover {
+    background-color: #102d6e;
+    color: var(--milenita-blanco);
+}
+
+.hero-milenita {
+    background: linear-gradient(135deg, #f7db39 0%, #ffe869 100%);
+    border-radius: 28px;
+    padding: 50px 36px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.hero-milenita h1 {
+    color: var(--milenita-azul);
+    font-weight: 900;
+    font-size: 2.6rem;
+}
+
+.hero-milenita p {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.section-title {
+    color: var(--milenita-azul);
+    font-weight: 900;
+    margin-bottom: 24px;
+}
+
+.milenita-card {
+    border: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: var(--milenita-blanco);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    height: 100%;
+}
+
+.milenita-card img {
+    height: 250px;
     object-fit: cover;
 }
 
-.hero {
-    background: linear-gradient(135deg, #0d6efd, #6ea8fe);
-    color: white;
-    padding: 100px 0;
-    margin-bottom: 30px;
+.milenita-card .card-body {
+    padding: 22px;
 }
 
-.card {
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
+.milenita-card .card-title {
+    font-weight: 800;
+    color: var(--milenita-azul);
+    font-size: 1.5rem;
 }
 
-footer {
+.milenita-price {
+    color: var(--milenita-rojo);
+    font-size: 1.6rem;
+    font-weight: 900;
+}
+
+.milenita-badge {
+    display: inline-block;
+    background-color: var(--milenita-rojo);
+    color: var(--milenita-blanco);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.milenita-form-box {
+    background-color: var(--milenita-blanco);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.milenita-footer {
     margin-top: 60px;
+    background-color: var(--milenita-azul);
+    color: var(--milenita-blanco);
+    padding: 40px 0;
+}
+
+.footer-brand {
+    font-weight: 900;
+    color: var(--milenita-amarillo);
+}
+
+.footer-title {
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.footer-text {
+    line-height: 1.6;
+}
+
+.footer-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.footer-list li {
+    margin-bottom: 8px;
+}
+
+.footer-list a {
+    color: var(--milenita-blanco);
+}
+
+.footer-list a:hover {
+    color: var(--milenita-amarillo);
+}
+
+@media (max-width: 768px) {
+    .milenita-brand {
+        font-size: 1.6rem;
+    }
+
+    .hero-milenita {
+        padding: 30px 20px;
+    }
+
+    .hero-milenita h1 {
+        font-size: 2rem;
+    }
 }
