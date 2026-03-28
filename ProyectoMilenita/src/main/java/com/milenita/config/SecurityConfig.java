@@ -42,6 +42,7 @@ public class SecurityConfig {
                         "/login", "/registro-form", "/registro",
                         "/estilos.css", "/img/**", "/css/**", "/js/**")
                 .permitAll()
+                .requestMatchers("/comentario/guardar").authenticated()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )

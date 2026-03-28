@@ -6,6 +6,7 @@ package com.milenita.controller;
 
 import com.milenita.domain.Producto;
 import com.milenita.service.CategoriaService;
+import com.milenita.service.ComentarioService;
 import com.milenita.service.ProductoService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class ProductoController {
 
     @Autowired
     private CategoriaService categoriaService;
+
+    @Autowired
+    private ComentarioService comentarioService;
 
     @GetMapping("/catalogo")
     public String catalogo(
@@ -58,6 +62,7 @@ public class ProductoController {
 
         model.addAttribute("producto", producto);
         model.addAttribute("masProductos", productoService.listarActivos());
+        model.addAttribute("comentarios", comentarioService.listarPorProducto(idProducto));
 
         return "detalle";
     }
