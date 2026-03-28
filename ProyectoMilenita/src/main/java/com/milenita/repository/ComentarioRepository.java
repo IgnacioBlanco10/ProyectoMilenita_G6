@@ -15,4 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
 
     List<Comentario> findByProducto_IdProductoOrderByFechaDesc(Long idProducto);
+    
+    List<Comentario> findAllByOrderByFechaDesc();
 }

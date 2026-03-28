@@ -25,6 +25,10 @@ public class ComentarioService {
         return comentarioRepository.findByProducto_IdProductoOrderByFechaDesc(idProducto);
     }
 
+    public List<Comentario> listarTodos() {
+        return comentarioRepository.findAllByOrderByFechaDesc();
+    }
+
     public void guardar(Comentario comentario) {
         comentario.setFecha(LocalDateTime.now());
         comentarioRepository.save(comentario);
