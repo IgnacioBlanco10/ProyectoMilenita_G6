@@ -48,9 +48,9 @@
                         </li>
 
                         <li class="nav-item" sec:authorize="isAuthenticated()">
-                            <span class="nav-link milenita-link">
-                                Hola, <span sec:authentication="name"></span>
-                            </span>
+                            <a class="nav-link milenita-link admin-link" th:href="@{/perfil}">
+                                Hola, <span th:text="${usuarioLogueado != null ? usuarioLogueado.nombre : 'Usuario'}"></span>
+                            </a>
                         </li>
 
                         <li class="nav-item" sec:authorize="isAuthenticated()">
