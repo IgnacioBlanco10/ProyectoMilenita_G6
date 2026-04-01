@@ -6,6 +6,8 @@ package com.milenita.controller;
 
 import com.milenita.domain.Usuario;
 import com.milenita.repository.UsuarioRepository;
+import com.milenita.service.CarritoService;
+import jakarta.servlet.http.HttpSession;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,6 +23,9 @@ public class AppControllerAdvice {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private CarritoService carritoService;
+
     @ModelAttribute("usuarioLogueado")
     public Usuario usuarioLogueado(Principal principal) {
         if (principal == null) {
@@ -28,5 +33,10 @@ public class AppControllerAdvice {
         }
 
         return usuarioRepository.findByCorreo(principal.getName()).orElse(null);
+    }
+
+    @ModelAttribute("cantidadCarrito")
+    public Integer cantidadCarrito(HttpSession session) {
+        return carritoService.obtenerCantidadTotal(session);
     }
 }

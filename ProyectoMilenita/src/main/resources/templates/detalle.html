@@ -95,6 +95,11 @@
                                class="btn milenita-btn-azul">
                                 Volver al catálogo
                             </a>
+                            
+                            <a th:href="@{/carrito/agregar/{id}(id=${producto.idProducto})}"
+                               class="btn milenita-btn-rojo">
+                                Agregar al carrito
+                            </a>
 
                             <a sec:authorize="hasRole('ADMIN')"
                                th:href="@{/admin/productos/editar/{id}(id=${producto.idProducto})}"

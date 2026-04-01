@@ -23,6 +23,12 @@
                         <li class="nav-item">
                             <a class="nav-link milenita-link" th:href="@{/catalogo}">Productos</a>
                         </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link milenita-link" th:href="@{/carrito}">
+                                Carrito (<span th:text="${cantidadCarrito}">0</span>)
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link milenita-link" th:href="@{/comentarios}">Comentarios</a>
