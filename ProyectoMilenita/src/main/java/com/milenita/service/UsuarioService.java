@@ -45,6 +45,10 @@ public class UsuarioService implements UserDetailsService {
         usuario.setActivo(true);
         usuario.setRoles(Set.of(rolUsuario));
 
+        if (usuario.getFotoPerfil() == null || usuario.getFotoPerfil().isBlank()) {
+            usuario.setFotoPerfil("logo_milenita.jpeg");
+        }
+        
         usuarioRepository.save(usuario);
     }
 

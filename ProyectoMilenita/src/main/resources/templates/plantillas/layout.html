@@ -48,8 +48,13 @@
                         </li>
 
                         <li class="nav-item" sec:authorize="isAuthenticated()">
-                            <a class="nav-link milenita-link admin-link" th:href="@{/perfil}">
-                                Hola, <span th:text="${usuarioLogueado != null ? usuarioLogueado.nombre : 'Usuario'}"></span>
+                            <a class="nav-link milenita-link admin-link d-flex align-items-center gap-2" th:href="@{/perfil}">
+                                <img th:if="${usuarioLogueado != null && usuarioLogueado.fotoPerfil != null}"
+                                     th:src="@{'/img/' + ${usuarioLogueado.fotoPerfil}}"
+                                     alt="Foto perfil"
+                                     style="width:35px; height:35px; object-fit:cover; border-radius:50%; border:2px solid white;">
+
+                                <span>Hola, <span th:text="${usuarioLogueado != null ? usuarioLogueado.nombre : 'Usuario'}"></span></span>
                             </a>
                         </li>
 

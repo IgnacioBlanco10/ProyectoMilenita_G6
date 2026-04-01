@@ -34,6 +34,28 @@
                                 <input type="password" th:field="*{password}" class="form-control" required>
                             </div>
 
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-block">Escoge tu foto de perfil</label>
+
+                                <div class="d-flex gap-4 flex-wrap">
+                                    <label class="text-center">
+                                        <input type="radio" th:field="*{fotoPerfil}" value="logo_milenita.jpeg" required>
+                                        <div class="mt-2">
+                                            <img th:src="@{/img/logo_milenita.jpeg}" alt="Logo Milenita"
+                                                 style="width:90px; height:90px; object-fit:cover; border-radius:50%; border:2px solid #ccc;">
+                                        </div>
+                                    </label>
+
+                                    <label class="text-center">
+                                        <input type="radio" th:field="*{fotoPerfil}" value="sticker_moderno.jpeg" required>
+                                        <div class="mt-2">
+                                            <img th:src="@{/img/sticker_moderno.jpeg}" alt="Sticker moderno"
+                                                 style="width:90px; height:90px; object-fit:cover; border-radius:50%; border:2px solid #ccc;">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
                             <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
                             <button type="submit" class="btn milenita-btn-azul w-100">Registrarse</button>

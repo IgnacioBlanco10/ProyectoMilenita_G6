@@ -19,19 +19,70 @@
                     <div class="milenita-form-box">
                         <h1 class="section-title text-center mb-4">Mi Perfil</h1>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Nombre</label>
-                            <input type="text" class="form-control" th:value="${usuario.nombre}" readonly>
-                        </div>
+                        <form th:action="@{/perfil/guardar}" th:object="${usuario}" method="post">
+                            <input type="hidden" th:field="*{idUsuario}">
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Correo</label>
-                            <input type="text" class="form-control" th:value="${usuario.correo}" readonly>
-                        </div>
+                            <div class="text-center mb-4">
+                                <img th:if="${usuario.fotoPerfil != null}"
+                                     th:src="@{'/img/' + ${usuario.fotoPerfil}}"
+                                     alt="Foto actual"
+                                     style="width:110px; height:110px; object-fit:cover; border-radius:50%; border:3px solid #ccc;">
+                            </div>
 
-                        <div class="text-center mt-4">
-                            <a th:href="@{/}" class="btn milenita-btn-azul">Volver al inicio</a>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nombre</label>
+                                <input type="text" class="form-control" th:field="*{nombre}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Correo</label>
+                                <input type="email" class="form-control" th:field="*{correo}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nueva contraseña</label>
+                                <input type="password" class="form-control" th:field="*{password}"
+                                       placeholder="Déjala vacía si no deseas cambiarla">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-block">Foto de perfil</label>
+
+                                <div class="d-flex gap-4 flex-wrap">
+                                    <label class="text-center">
+                                        <input type="radio" th:field="*{fotoPerfil}" value="logo_milenita.jpeg">
+                                        <div class="mt-2">
+                                            <img th:src="@{/img/logo_milenita.jpeg}" alt="Logo Milenita"
+                                                 style="width:90px; height:90px; object-fit:cover; border-radius:50%; border:2px solid #ccc;">
+                                        </div>
+                                    </label>
+
+                                    <label class="text-center">
+                                        <input type="radio" th:field="*{fotoPerfil}" value="sticker_moderno.jpeg">
+                                        <div class="mt-2">
+                                            <img th:src="@{/img/sticker_moderno.jpeg}" alt="Sticker moderno"
+                                                 style="width:90px; height:90px; object-fit:cover; border-radius:50%; border:2px solid #ccc;">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Estado</label>
+                                <input type="text" class="form-control"
+                                       th:value="${usuario.activo ? 'Activo' : 'Inactivo'}" readonly>
+                            </div>
+
+                            <div class="mb-3" sec:authorize="hasRole('ADMIN')">
+                                <label class="form-label fw-bold">Roles</label>
+                                <input type="text" class="form-control"
+                                       th:value="${#strings.listJoin(usuario.roles.![nombre], ', ')}" readonly>
+                            </div>
+
+                            <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+
+                            <button type="submit" class="btn milenita-btn-azul w-100">Guardar cambios</button>
+                        </form>
                     </div>
                 </div>
             </div>
