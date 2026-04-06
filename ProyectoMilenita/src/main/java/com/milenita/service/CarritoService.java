@@ -4,12 +4,22 @@
  */
 package com.milenita.service;
 
-import com.milenita.domain.ItemCarrito;
+import com.milenita.domain.EstadoFactura;
+import com.milenita.domain.Factura;
+import com.milenita.domain.Item;
 import com.milenita.domain.Producto;
+import com.milenita.domain.Usuario;
+import com.milenita.domain.Venta;
+import com.milenita.repository.FacturaRepository;
+import com.milenita.repository.ProductoRepository;
+import com.milenita.repository.VentaRepository;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -18,84 +28,119 @@ import org.springframework.stereotype.Service;
 @Service
 public class CarritoService {
 
-    private static final String CARRITO_SESSION = "carrito";
+    private static final String ATRIBUTO_CARRITO = "carrito";
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
+
+    @Autowired
+    private VentaRepository ventaRepository;
 
     @SuppressWarnings("unchecked")
-    public List<ItemCarrito> obtenerCarrito(HttpSession session) {
-        List<ItemCarrito> carrito = (List<ItemCarrito>) session.getAttribute(CARRITO_SESSION);
-
+    public List<Item> obtenerCarrito(HttpSession session) {
+        List<Item> carrito = (List<Item>) session.getAttribute(ATRIBUTO_CARRITO);
         if (carrito == null) {
             carrito = new ArrayList<>();
-            session.setAttribute(CARRITO_SESSION, carrito);
+            session.setAttribute(ATRIBUTO_CARRITO, carrito);
         }
-
         return carrito;
     }
 
-    public void agregarProducto(HttpSession session, Producto producto) {
-        List<ItemCarrito> carrito = obtenerCarrito(session);
+    public void agregarProducto(HttpSession session, Long idProducto) {
+        List<Item> carrito = obtenerCarrito(session);
+        Producto producto = productoRepository.findById(idProducto).orElse(null);
 
-        for (ItemCarrito item : carrito) {
-            if (item.getProducto().getIdProducto().equals(producto.getIdProducto())) {
+        if (producto == null) {
+            return;
+        }
+
+        for (Item item : carrito) {
+            if (item.getProducto().getIdProducto().equals(idProducto)) {
                 item.setCantidad(item.getCantidad() + 1);
-                session.setAttribute(CARRITO_SESSION, carrito);
+                session.setAttribute(ATRIBUTO_CARRITO, carrito);
                 return;
             }
         }
 
-        carrito.add(new ItemCarrito(producto, 1));
-        session.setAttribute(CARRITO_SESSION, carrito);
+        carrito.add(new Item(producto, 1, producto.getPrecio()));
+        session.setAttribute(ATRIBUTO_CARRITO, carrito);
     }
 
-    public void aumentarCantidad(HttpSession session, Long idProducto) {
-        List<ItemCarrito> carrito = obtenerCarrito(session);
-
-        for (ItemCarrito item : carrito) {
-            if (item.getProducto().getIdProducto().equals(idProducto)) {
-                item.setCantidad(item.getCantidad() + 1);
-                break;
-            }
-        }
-
-        session.setAttribute(CARRITO_SESSION, carrito);
-    }
-
-    public void disminuirCantidad(HttpSession session, Long idProducto) {
-        List<ItemCarrito> carrito = obtenerCarrito(session);
+    public void modificarCantidad(HttpSession session, Long idProducto, int cantidad) {
+        List<Item> carrito = obtenerCarrito(session);
 
         carrito.removeIf(item -> {
             if (item.getProducto().getIdProducto().equals(idProducto)) {
-                int nuevaCantidad = item.getCantidad() - 1;
-                if (nuevaCantidad <= 0) {
+                if (cantidad <= 0) {
                     return true;
                 }
-                item.setCantidad(nuevaCantidad);
+                item.setCantidad(cantidad);
             }
             return false;
         });
 
-        session.setAttribute(CARRITO_SESSION, carrito);
+        session.setAttribute(ATRIBUTO_CARRITO, carrito);
     }
 
     public void eliminarProducto(HttpSession session, Long idProducto) {
-        List<ItemCarrito> carrito = obtenerCarrito(session);
+        List<Item> carrito = obtenerCarrito(session);
         carrito.removeIf(item -> item.getProducto().getIdProducto().equals(idProducto));
-        session.setAttribute(CARRITO_SESSION, carrito);
+        session.setAttribute(ATRIBUTO_CARRITO, carrito);
     }
 
     public Double obtenerTotal(HttpSession session) {
-        return obtenerCarrito(session).stream()
-                .mapToDouble(ItemCarrito::getSubtotal)
+        return obtenerCarrito(session)
+                .stream()
+                .mapToDouble(Item::getSubTotal)
                 .sum();
     }
 
-    public Integer obtenerCantidadTotal(HttpSession session) {
-        return obtenerCarrito(session).stream()
-                .mapToInt(ItemCarrito::getCantidad)
+    public Integer obtenerCantidadItems(HttpSession session) {
+        return obtenerCarrito(session)
+                .stream()
+                .mapToInt(Item::getCantidad)
                 .sum();
     }
 
-    public void vaciarCarrito(HttpSession session) {
-        session.removeAttribute(CARRITO_SESSION);
+    public void limpiarCarrito(HttpSession session) {
+        session.removeAttribute(ATRIBUTO_CARRITO);
+    }
+
+    @Transactional
+    public Factura facturar(HttpSession session, Usuario usuario) {
+        List<Item> carrito = obtenerCarrito(session);
+
+        if (carrito.isEmpty()) {
+            return null;
+        }
+
+        Factura factura = new Factura();
+        factura.setUsuario(usuario);
+        factura.setFecha(LocalDateTime.now());
+        factura.setEstado(EstadoFactura.Pagada);
+        factura.setTotal(obtenerTotal(session));
+
+        factura = facturaRepository.save(factura);
+
+        for (Item item : carrito) {
+            Producto producto = item.getProducto();
+
+            Venta venta = new Venta();
+            venta.setFactura(factura);
+            venta.setProducto(producto);
+            venta.setCantidad(item.getCantidad());
+            venta.setPrecioHistorico(item.getPrecioHistorico());
+
+            ventaRepository.save(venta);
+
+            producto.setStock(producto.getStock() - item.getCantidad());
+            productoRepository.save(producto);
+        }
+
+        limpiarCarrito(session);
+        return factura;
     }
 }

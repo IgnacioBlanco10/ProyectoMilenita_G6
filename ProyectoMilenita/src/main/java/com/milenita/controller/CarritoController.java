@@ -4,10 +4,13 @@
  */
 package com.milenita.controller;
 
-import com.milenita.domain.Producto;
+import com.milenita.domain.Factura;
+import com.milenita.domain.Usuario;
+import com.milenita.repository.UsuarioRepository;
 import com.milenita.service.CarritoService;
-import com.milenita.service.ProductoService;
+import com.milenita.service.FacturaService;
 import jakarta.servlet.http.HttpSession;
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,47 +27,50 @@ public class CarritoController {
     private CarritoService carritoService;
 
     @Autowired
-    private ProductoService productoService;
+    private FacturaService facturaService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping("/carrito")
-    public String verCarrito(Model model, HttpSession session) {
-        model.addAttribute("items", carritoService.obtenerCarrito(session));
-        model.addAttribute("total", carritoService.obtenerTotal(session));
+    public String verCarrito(HttpSession session, Model model) {
+        model.addAttribute("carritoItems", carritoService.obtenerCarrito(session));
+        model.addAttribute("carritoTotal", carritoService.obtenerTotal(session));
         return "carrito";
     }
 
-    @GetMapping("/carrito/agregar/{id}")
-    public String agregarProducto(@PathVariable("id") Long idProducto, HttpSession session) {
-        Producto producto = productoService.obtenerPorId(idProducto);
-
-        if (producto != null) {
-            carritoService.agregarProducto(session, producto);
-        }
-
+    @PostMapping("/carrito/agregar")
+    public String agregar(@RequestParam("idProducto") Long idProducto, HttpSession session) {
+        carritoService.agregarProducto(session, idProducto);
         return "redirect:/carrito";
     }
 
-    @GetMapping("/carrito/aumentar/{id}")
-    public String aumentarCantidad(@PathVariable("id") Long idProducto, HttpSession session) {
-        carritoService.aumentarCantidad(session, idProducto);
-        return "redirect:/carrito";
-    }
-
-    @GetMapping("/carrito/disminuir/{id}")
-    public String disminuirCantidad(@PathVariable("id") Long idProducto, HttpSession session) {
-        carritoService.disminuirCantidad(session, idProducto);
+    @PostMapping("/carrito/modificar")
+    public String modificar(@RequestParam("idProducto") Long idProducto,
+                            @RequestParam("cantidad") int cantidad,
+                            HttpSession session) {
+        carritoService.modificarCantidad(session, idProducto, cantidad);
         return "redirect:/carrito";
     }
 
     @GetMapping("/carrito/eliminar/{id}")
-    public String eliminarProducto(@PathVariable("id") Long idProducto, HttpSession session) {
+    public String eliminar(@PathVariable("id") Long idProducto, HttpSession session) {
         carritoService.eliminarProducto(session, idProducto);
         return "redirect:/carrito";
     }
 
-    @GetMapping("/carrito/vaciar")
-    public String vaciarCarrito(HttpSession session) {
-        carritoService.vaciarCarrito(session);
-        return "redirect:/carrito";
+    @GetMapping("/verFactura/{id}")
+    public String verFactura(@PathVariable("id") Long idFactura, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        Factura factura = facturaService.getFacturaConVentas(idFactura);
+        if (factura == null) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("factura", factura);
+        return "verFactura";
     }
 }

@@ -4,6 +4,7 @@
  */
 package com.milenita.domain;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,15 +16,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemCarrito {
+public class Item implements Serializable {
 
     private Producto producto;
-    private Integer cantidad;
+    private int cantidad;
+    private Double precioHistorico;
 
-    public Double getSubtotal() {
-        if (producto == null || producto.getPrecio() == null || cantidad == null) {
+    public Double getSubTotal() {
+        if (precioHistorico == null) {
             return 0.0;
         }
-        return producto.getPrecio() * cantidad;
+        return precioHistorico * cantidad;
     }
 }

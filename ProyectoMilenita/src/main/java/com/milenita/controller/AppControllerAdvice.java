@@ -37,6 +37,6 @@ public class AppControllerAdvice {
 
     @ModelAttribute("cantidadCarrito")
     public Integer cantidadCarrito(HttpSession session) {
-        return carritoService.obtenerCantidadTotal(session);
+        return carritoService.obtenerCantidadItems(session);
     }
 }
