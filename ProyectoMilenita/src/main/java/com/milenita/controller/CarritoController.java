@@ -5,7 +5,6 @@
 package com.milenita.controller;
 
 import com.milenita.domain.Factura;
-import com.milenita.domain.Usuario;
 import com.milenita.repository.UsuarioRepository;
 import com.milenita.service.CarritoService;
 import com.milenita.service.FacturaService;

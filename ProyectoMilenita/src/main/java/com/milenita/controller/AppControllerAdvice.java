@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+
 /**
  *
  * @author nacho
@@ -31,7 +32,6 @@ public class AppControllerAdvice {
         if (principal == null) {
             return null;
         }
-
         return usuarioRepository.findByCorreo(principal.getName()).orElse(null);
     }
 
