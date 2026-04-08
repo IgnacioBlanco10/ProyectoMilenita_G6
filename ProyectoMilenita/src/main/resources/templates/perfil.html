@@ -78,6 +78,37 @@
                                 <input type="text" class="form-control"
                                        th:value="${#strings.listJoin(usuario.roles.![nombre], ', ')}" readonly>
                             </div>
+                            
+                            <h3 class="mt-5">Mis pedidos</h3>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Factura</th>
+                                        <th>Estado</th>
+                                        <th>Ver</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="p : ${pedidos}">
+                                        <td th:text="${p.idPedido}"></td>
+                                        <td th:text="${p.factura.idFactura}"></td>
+
+                                        <td>
+                                            <span th:if="${p.estado.name() == 'PROCESANDO'}" class="badge bg-warning">En proceso</span>
+                                            <span th:if="${p.estado.name() == 'EN_CAMINO'}" class="badge bg-primary">En camino</span>
+                                            <span th:if="${p.estado.name() == 'ENTREGADO'}" class="badge bg-success">Entregado</span>
+                                        </td>
+
+                                        <td>
+                                            <a th:href="@{/verFactura/{id}(id=${p.factura.idFactura})}" class="btn btn-sm btn-dark">
+                                                Ver
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
                             <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
 

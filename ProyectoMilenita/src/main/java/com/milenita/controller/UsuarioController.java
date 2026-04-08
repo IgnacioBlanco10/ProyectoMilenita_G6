@@ -6,6 +6,7 @@ package com.milenita.controller;
 
 import com.milenita.domain.Usuario;
 import com.milenita.repository.UsuarioRepository;
+import com.milenita.service.PedidoService;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UsuarioController {
+    
+    @Autowired
+    private PedidoService pedidoService;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -38,6 +42,8 @@ public class UsuarioController {
 
         usuario.setPassword("");
         model.addAttribute("usuario", usuario);
+        model.addAttribute("pedidos", pedidoService.listarPorUsuario(usuario.getIdUsuario()));
+        
         return "perfil";
     }
 

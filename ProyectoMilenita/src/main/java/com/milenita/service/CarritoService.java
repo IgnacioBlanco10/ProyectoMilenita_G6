@@ -5,8 +5,10 @@
 package com.milenita.service;
 
 import com.milenita.domain.EstadoFactura;
+import com.milenita.domain.EstadoPedido;
 import com.milenita.domain.Factura;
 import com.milenita.domain.Item;
+import com.milenita.domain.Pedido;
 import com.milenita.domain.Producto;
 import com.milenita.domain.Usuario;
 import com.milenita.domain.Venta;
@@ -38,6 +40,9 @@ public class CarritoService {
 
     @Autowired
     private VentaRepository ventaRepository;
+    
+    @Autowired
+    private PedidoService pedidoService;
 
     @SuppressWarnings("unchecked")
     public List<Item> obtenerCarrito(HttpSession session) {
@@ -124,6 +129,13 @@ public class CarritoService {
         factura.setTotal(obtenerTotal(session));
 
         factura = facturaRepository.save(factura);
+        
+        Pedido pedido = new Pedido();
+        pedido.setUsuario(usuario);
+        pedido.setFactura(factura);
+        pedido.setEstado(EstadoPedido.PROCESANDO);
+
+        pedidoService.guardar(pedido);
 
         for (Item item : carrito) {
             Producto producto = item.getProducto();

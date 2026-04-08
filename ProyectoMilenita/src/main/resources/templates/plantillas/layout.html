@@ -45,6 +45,11 @@
                                 Usuarios
                             </a>
                         </li>
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                            <a class="nav-link milenita-link admin-link" th:href="@{/admin/pedidos}">
+                                Pedidos
+                            </a>
+                        </li>
                         <li class="nav-item" sec:authorize="isAnonymous()">
                             <a class="nav-link milenita-link" th:href="@{/login}">Login</a>
                         </li>
