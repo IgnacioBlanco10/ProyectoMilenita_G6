@@ -62,6 +62,7 @@ public class UsuarioController {
         usuario.setNombre(usuarioForm.getNombre());
         usuario.setCorreo(usuarioForm.getCorreo());
         usuario.setFotoPerfil(usuarioForm.getFotoPerfil());
+        usuario.setGenero(usuarioForm.getGenero());
 
         if (usuarioForm.getPassword() != null && !usuarioForm.getPassword().isBlank()) {
             usuario.setPassword(passwordEncoder.encode(usuarioForm.getPassword()));

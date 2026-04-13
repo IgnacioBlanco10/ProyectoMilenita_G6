@@ -19,5 +19,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     List<Producto> findByActivoTrueAndCategoria_IdCategoria(Long idCategoria);
 
+    List<Producto> findByActivoTrueAndNombreContainingIgnoreCaseAndCategoria_IdCategoria(String nombre, Long idCategoria);
+
     Optional<Producto> findByIdProductoAndActivoTrue(Long idProducto);
 }

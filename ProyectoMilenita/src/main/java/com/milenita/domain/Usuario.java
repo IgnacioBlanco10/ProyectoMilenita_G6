@@ -32,6 +32,9 @@ public class Usuario {
 
     @Column(nullable = false)
     private Boolean activo = true;
+    
+    @Column(length = 20)
+    private String genero;
 
     @Column(name = "foto_perfil", length = 100)
     private String fotoPerfil;

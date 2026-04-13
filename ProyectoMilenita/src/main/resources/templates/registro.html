@@ -25,6 +25,17 @@
                             </div>
 
                             <div class="mb-3">
+                                <label class="form-label fw-bold">Género</label>
+
+                                <select th:field="*{genero}" class="form-select">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="HOMBRE">Hombre</option>
+                                    <option value="MUJER">Mujer</option>
+                                    <option value="NO_DECIR">Prefiero no decir</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
                                 <label class="form-label fw-bold">Correo</label>
                                 <input type="email" th:field="*{correo}" class="form-control" required>
                             </div>

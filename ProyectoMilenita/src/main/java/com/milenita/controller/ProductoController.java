@@ -36,9 +36,14 @@ public class ProductoController {
 
         List<Producto> productos;
 
-        if (busqueda != null && !busqueda.isBlank()) {
+        boolean hayBusqueda = busqueda != null && !busqueda.isBlank();
+        boolean hayCategoria = categoria != null;
+
+        if (hayBusqueda && hayCategoria) {
+            productos = productoService.buscarYFiltrar(busqueda, categoria);
+        } else if (hayBusqueda) {
             productos = productoService.buscarPorNombre(busqueda);
-        } else if (categoria != null) {
+        } else if (hayCategoria) {
             productos = productoService.filtrarPorCategoria(categoria);
         } else {
             productos = productoService.listarActivos();

@@ -57,4 +57,8 @@ public class ProductoService {
         }
     }
     
+    public List<Producto> buscarYFiltrar(String nombre, Long idCategoria) {
+        return productoRepository.findByActivoTrueAndNombreContainingIgnoreCaseAndCategoria_IdCategoria(nombre, idCategoria);
+    }
+    
 }
