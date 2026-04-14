@@ -17,8 +17,33 @@
                 <div class="col-md-6">
                     <div class="milenita-form-box">
                         <h1 class="text-center section-title mb-4">Iniciar Sesión</h1>
-
+                        
                         <form th:action="@{/login}" method="post">
+                            
+                            <div class="text-center mt-4">
+                                <p class="mb-3 fw-bold">O inicia sesión con</p>
+
+                                <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+                                    <a href="https://www.facebook.com/login"
+                                       target="_blank"
+                                       class="btn btn-light border d-flex align-items-center gap-2 px-4 py-2">
+
+                                        <img th:src="@{/img/facebook.jpeg}" alt="Facebook" width="22">
+                                        Facebook
+                                    </a>
+
+                                    <a href="https://www.instagram.com/accounts/login/"
+                                       target="_blank"
+                                       class="btn d-flex align-items-center gap-2 px-4 py-2 text-white"
+                                       style="background: linear-gradient(45deg,#feda75,#d62976,#962fbf,#4f5bd5);">
+
+                                        <img th:src="@{/img/instagram.jpeg}" alt="Instagram" width="22">
+                                        Instagram
+                                    </a>
+
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Correo</label>
                                 <input type="email" name="correo" class="form-control" required>
